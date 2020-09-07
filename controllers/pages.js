@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 const store = mongoose.model('store');
 
+// Index
 exports.index = async (req, res) => {
-    const stores = await store.find({});
+    // .lean() convert to native object
+    const stores = await store.find({}).lean();
     res.render("pages/index", {
         title: "Welcome to Shops",
         stores: stores,
@@ -11,6 +13,18 @@ exports.index = async (req, res) => {
     });
 };
 
+exports.store = async (req, res) => {
+    const store_uniq = await store.findOne({slug: req.params.slug}).lean();
+    res.render("pages/store_details", {
+        title: store_uniq.name + "'s details",
+        store: store_uniq,
+        showNav: true,
+        showFooter: false
+    });
+};
+
+
+// Add Store
 exports.addStore = (req, res) => {
     res.render("pages/add_store", {
         title: "Add Store",
@@ -19,6 +33,8 @@ exports.addStore = (req, res) => {
     });
 };
 
+
+// About
 exports.about = (req, res) => {
     res.render("pages/about", {
         title: "About",
@@ -27,6 +43,8 @@ exports.about = (req, res) => {
     });
 };
 
+
+// Contact
 exports.contact = (req, res) => {
     res.render("pages/contact", {
         title: "Contact",
@@ -35,6 +53,8 @@ exports.contact = (req, res) => {
     });
 };
 
+
+// Login
 exports.login = (req, res) => {
     res.render("pages/login", {
         title: "Login",
@@ -43,6 +63,8 @@ exports.login = (req, res) => {
     });
 };
 
+
+// Register
 exports.register = (req, res) => {
     res.render("pages/register", {
         title: "Register",
